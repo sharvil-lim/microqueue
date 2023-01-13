@@ -27,12 +27,21 @@ public class QueueManager {
         queuePool.put(queueName, messageQueue);
     }
 
+    public Queue<String> searchQueue(String queueName) {
+        return queuePool.get(queueName);
+    }
+
     public void enqueueMessage(String message, String queueName) {
-        queuePool.get(queueName).add(message);
+        if (queuePool.get(queueName) != null) {
+            queuePool.get(queueName).add(message);
+        }
     }
 
     public String dequeueMessage(String queueName) {
-        return queuePool.get(queueName).remove();
+        if (queuePool.get(queueName) != null) {
+            return queuePool.get(queueName).remove();
+        } else {
+            return null;
+        }
     }
-
 }

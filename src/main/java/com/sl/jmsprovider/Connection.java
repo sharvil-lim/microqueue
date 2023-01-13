@@ -1,37 +1,26 @@
 package com.sl.jmsprovider;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class Connection {
-    private ServerSocket serverSocket = null;
-    private ExecutorService pool;
-    private ArrayList<Socket> sockets;
-    final private int poolSize = 10;
+public class Connection implements Runnable {
+    private ServerSocket serverSocket;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
+    private Socket socket;
 
-    public Connection(int port) {
-        try {
-            this.serverSocket = new ServerSocket(port);
-            this.pool = Executors.newFixedThreadPool(poolSize);
-            this.sockets = new ArrayList<>();
-        } catch (IOException e) {
-            close();
-        }
+    public Connection(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
     }
 
     public void start() {
         try {
-            while (!serverSocket.isClosed()) {
-                Socket socket = serverSocket.accept();
-                sockets.add(socket);
-                ConnectionManager connectionManager = new ConnectionManager(socket);
-                pool.execute(connectionManager);
+            if (!serverSocket.isClosed()) {
+                this.socket = serverSocket.accept();
+                this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                notifyAll();
             }
         } catch (IOException e) {
             close();
@@ -40,62 +29,36 @@ public class Connection {
 
     public void close() {
         try {
-            if (pool != null) {
-                pool.shutdownNow();
-            }
-
-            if (sockets != null && sockets.size() > 0) {
-                for (Socket socket : sockets) {
-                    socket.close();
-                }
-            }
-
-            if (serverSocket != null) {
-                serverSocket.isClosed();
+            if (socket != null) {
+                socket.close();
+            } if (serverSocket != null) {
+                serverSocket.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private class ConnectionManager implements Runnable {
-        private Socket socket;
-        private BufferedReader bufferedReader;
+    @Override
+    public void run() {
+        try {
+            wait();
+            String receivedMessage; // TODO : add serialized message objects
+            Session session = new Session();
 
-        ConnectionManager(Socket socket) {
-            try {
-                this.socket = socket;
-                this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            } catch (IOException e) {
-                close();
-            }
-        }
-
-        public void close() {
-            try {
-                if (socket != null) {
-                    socket.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void run() {
-            String receivedMessage;
-            QueueManager queueManager = QueueManager.instantiate();
-            queueManager.createQueue("sample");
-
-            while (socket.isConnected()) {
-                try {
-                    receivedMessage = bufferedReader.readLine();
-                    queueManager.enqueueMessage(receivedMessage, "sample");
-                } catch (IOException e) {
-                    close();
-                    break;
+            while(socket.isConnected()) {
+                receivedMessage = bufferedReader.readLine();
+                if (receivedMessage.startsWith("Request ")) { // TODO : Add command handler
+                    String[] arr = receivedMessage.split(" ", 2);
+                    bufferedWriter.write(session.createProducer(arr[1]).produce());
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                } else {
+                    session.createConsumer("Sample").consume(receivedMessage);
                 }
             }
+        } catch (InterruptedException | IOException e) {
+            close();
         }
     }
 }
