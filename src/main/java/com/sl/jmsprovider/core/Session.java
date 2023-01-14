@@ -1,14 +1,14 @@
-package com.sl.jmsprovider;
+package com.sl.jmsprovider.core;
 
 import java.io.*;
 import java.net.Socket;
 
-class ConnectionManager implements Runnable {
+class Session implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
 
-    ConnectionManager(Socket socket) {
+    Session(Socket socket) {
         try {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

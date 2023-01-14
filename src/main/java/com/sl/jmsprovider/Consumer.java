@@ -1,5 +1,7 @@
 package com.sl.jmsprovider;
 
+import com.sl.jmsprovider.core.QueueManager;
+
 public class Consumer {
     private QueueManager queueManager;
     private String queueName;

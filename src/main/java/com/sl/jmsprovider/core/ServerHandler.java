@@ -1,15 +1,15 @@
-package com.sl.jmsprovider;
+package com.sl.jmsprovider.core;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 
-public class Connection {
+public class ServerHandler {
     private ServerSocket serverSocket;
     private LinkedList<Socket> sockets;
 
-    public Connection(ServerSocket serverSocket) {
+    public ServerHandler(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.sockets = new LinkedList<>();
     }
@@ -19,8 +19,8 @@ public class Connection {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 sockets.add(socket);
-                ConnectionManager connectionManager = new ConnectionManager(socket);
-                Thread thread = new Thread(connectionManager);
+                Session session = new Session(socket);
+                Thread thread = new Thread(session);
                 thread.start();
             }
         } catch (IOException e) {

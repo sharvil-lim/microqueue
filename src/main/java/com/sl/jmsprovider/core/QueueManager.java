@@ -1,4 +1,4 @@
-package com.sl.jmsprovider;
+package com.sl.jmsprovider.core;
 
 import java.util.Hashtable;
 import java.util.LinkedList;

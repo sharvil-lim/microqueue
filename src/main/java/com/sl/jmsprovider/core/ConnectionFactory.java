@@ -1,21 +1,19 @@
-package com.sl.jmsprovider;
+package com.sl.jmsprovider.core;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.LinkedList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ConnectionFactory {
     private static ConnectionFactory instance = null;
-    private LinkedList<Connection> connections;
+    private LinkedList<ServerHandler> serverHandlers;
     private ServerSocket serverSocket;
     private static int connectionPort;
 
     private ConnectionFactory() {
         try {
             this.serverSocket = new ServerSocket(connectionPort);
-            this.connections = new LinkedList<>();
+            this.serverHandlers = new LinkedList<>();
         } catch (IOException e) {
             shutdown();
         }
@@ -28,19 +26,19 @@ public class ConnectionFactory {
         } return instance;
     }
 
-    public Connection createConnection() {
-        Connection connection = new Connection(serverSocket);
-        connections.add(connection);
-        return connection;
+    public ServerHandler createConnection() {
+        ServerHandler serverHandler = new ServerHandler(serverSocket);
+        serverHandlers.add(serverHandler);
+        return serverHandler;
     }
 
     public void shutdown() {
         try {
             if (serverSocket != null) {
                 serverSocket.close();
-            } if (connections != null) {
-                for (Connection connection : connections) {
-                    connection.close();
+            } if (serverHandlers != null) {
+                for (ServerHandler serverHandler : serverHandlers) {
+                    serverHandler.close();
                 }
             }
         } catch (IOException e) {
