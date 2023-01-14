@@ -3,7 +3,7 @@ package com.sl.jmsprovider.core;
 import java.io.*;
 import java.net.Socket;
 
-class Session implements Runnable {
+public class Session implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;

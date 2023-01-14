@@ -1,11 +1,20 @@
 package com.sl.jmsprovider.jms;
 
 import  javax.jms.*;
+import java.net.Socket;
 
-public class QueueConnection implements javax.jms.QueueConnection {
+public class SLQueueConnection implements javax.jms.QueueConnection {
+    private Socket socket;
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
     @Override
     public QueueSession createQueueSession(boolean transacted, int acknowledgeMode) throws JMSException {
-        return null;
+        SLQueueSession queueSession = new SLQueueSession();
+        queueSession.setSocket(this.socket);
+        return queueSession;
     }
 
     @Override
@@ -55,7 +64,6 @@ public class QueueConnection implements javax.jms.QueueConnection {
 
     @Override
     public void start() throws JMSException {
-
     }
 
     @Override

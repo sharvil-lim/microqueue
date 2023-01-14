@@ -4,11 +4,23 @@ import javax.jms.Connection;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.QueueConnection;
+import java.io.IOException;
+import java.net.Socket;
 
-public class QueueConnectionFactory implements javax.jms.QueueConnectionFactory {
+public class SLQueueConnectionFactory implements javax.jms.QueueConnectionFactory {
+    private Socket socket;
     @Override
     public QueueConnection createQueueConnection() throws JMSException {
-        return null;
+        SLQueueConnection SLQueueConnection = new SLQueueConnection();
+
+        try {
+              socket = new Socket("localhost", 1234);
+              SLQueueConnection.setSocket(socket);
+        } catch (IOException e) {
+            throw new JMSException(e.getMessage());
+        }
+
+        return SLQueueConnection;
     }
 
     @Override
