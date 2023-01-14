@@ -8,7 +8,6 @@ import java.util.concurrent.Executors;
 
 public class ConnectionFactory {
     private static ConnectionFactory instance = null;
-    private ExecutorService connectionPool;
     private LinkedList<Connection> connections;
     private ServerSocket serverSocket;
     private static int connectionPort;
@@ -16,7 +15,6 @@ public class ConnectionFactory {
     private ConnectionFactory() {
         try {
             this.serverSocket = new ServerSocket(connectionPort);
-            this.connectionPool = Executors.newFixedThreadPool(11);
             this.connections = new LinkedList<>();
         } catch (IOException e) {
             shutdown();
@@ -32,22 +30,15 @@ public class ConnectionFactory {
 
     public Connection createConnection() {
         Connection connection = new Connection(serverSocket);
-        connectionPool.submit(connection);
         connections.add(connection);
         return connection;
     }
 
     public void shutdown() {
         try {
-            if (connectionPool != null) {
-                connectionPool.shutdownNow();
-            }
-
             if (serverSocket != null) {
                 serverSocket.close();
-            }
-
-            if (connections != null) {
+            } if (connections != null) {
                 for (Connection connection : connections) {
                     connection.close();
                 }
