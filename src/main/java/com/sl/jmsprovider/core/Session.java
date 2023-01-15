@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class Session implements Runnable {
+    private SessionHandler sessionHandler;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -22,36 +23,44 @@ public class Session implements Runnable {
         try {
             if (socket != null) {
                 socket.close();
-            } if (bufferedReader != null) {
-                bufferedReader.close();
             } if (bufferedWriter != null) {
                 bufferedWriter.close();
+            } if (bufferedReader != null) {
+                bufferedReader.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public Socket getSocket() {
+        return this.socket;
+    }
+
+    public BufferedReader getBufferedReader() {
+        return this.bufferedReader;
+    }
+
+    public BufferedWriter getBufferedWriter() {
+        return this.bufferedWriter;
+    }
+
     @Override
     public void run() {
-        String receivedMessage;
-        QueueManager queueManager = QueueManager.instantiate();
-        queueManager.createQueue("sample");
+        try {
+            String producerConsumerString = bufferedReader.readLine();
+            String queueName = bufferedReader.readLine();
 
-        while (socket.isConnected()) {
-            try {
-                receivedMessage = bufferedReader.readLine();
-                if (receivedMessage.equals("Remove")) {
-                    bufferedWriter.write(queueManager.dequeueMessage("sample"));
-                    bufferedWriter.newLine();
-                    bufferedWriter.flush();
-                } else {
-                    queueManager.enqueueMessage(receivedMessage, "sample");
-                }
-            } catch (IOException e) {
-                close();
-                break;
+            if (producerConsumerString.equals("Consumer")) {
+                this.sessionHandler = new Consumer(queueName,this);
+            } else if (producerConsumerString.equals("Producer")) {
+                this.sessionHandler = new Producer(queueName, this);
             }
+
+            Thread thread = new Thread(sessionHandler);
+            thread.start();
+        } catch (IOException e) {
+            close();
         }
     }
 }

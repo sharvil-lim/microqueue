@@ -1,15 +1,13 @@
 package com.sl.jmsprovider;
 
-import com.sl.jmsprovider.core.ServerHandler;
-import com.sl.jmsprovider.core.ConnectionFactory;
+import com.sl.jmsprovider.core.*;
 
 public class Server {
 
     public static void main(String[] args) {
         ConnectionFactory connectionFactory = ConnectionFactory.initialize(1234);
-        ServerHandler serverHandler = connectionFactory.createConnection();
-        serverHandler.start();
-
+        ServerHandler connection = connectionFactory.createConnection();
+        connection.start();
     }
 
 }

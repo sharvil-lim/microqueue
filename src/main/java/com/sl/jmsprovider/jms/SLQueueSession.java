@@ -1,14 +1,34 @@
 package com.sl.jmsprovider.jms;
 
 import javax.jms.*;
-import java.io.Serializable;
+import java.io.*;
 import java.net.Socket;
 
 public class SLQueueSession implements QueueSession {
     private Socket socket;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
 
     public void setSocket(Socket socket) {
         this.socket = socket;
+        setBufferedReader();
+        setBufferedWriter();
+    }
+
+    public void setBufferedWriter() {
+        try {
+            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setBufferedReader() {
+        try {
+            this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -174,14 +194,36 @@ public class SLQueueSession implements QueueSession {
     @Override
     public QueueReceiver createReceiver(Queue queue, String messageSelector) throws JMSException {
         SLQQueueReceiver queueReceiver = new SLQQueueReceiver();
+
+        try {
+            bufferedWriter.write("Consumer");
+            bufferedWriter.write(queue.getQueueName());
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         queueReceiver.setSocket(this.socket);
+        queueReceiver.setBufferedReader(this.bufferedReader);
         return queueReceiver;
     }
 
     @Override
     public QueueSender createSender(Queue queue) throws JMSException {
         SLQueueSender queueSender = new SLQueueSender();
+
+        try {
+            bufferedWriter.write("Producer");
+            bufferedWriter.write(queue.getQueueName());
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         queueSender.setSocket(this.socket);
+        queueSender.setBufferedWriter(this.bufferedWriter);
         return queueSender;
     }
 

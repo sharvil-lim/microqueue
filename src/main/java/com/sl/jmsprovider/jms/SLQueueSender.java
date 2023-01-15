@@ -3,14 +3,18 @@ package com.sl.jmsprovider.jms;
 import javax.jms.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class SLQueueSender implements QueueSender {
     private Socket socket;
+    private BufferedWriter bufferedWriter;
 
     public void setSocket(Socket socket) {
         this.socket = socket;
+    }
+
+    public void setBufferedWriter(BufferedWriter bufferedWriter) {
+        this.bufferedWriter = bufferedWriter;
     }
 
     @Override
@@ -92,7 +96,6 @@ public class SLQueueSender implements QueueSender {
     public void send(Message message) throws JMSException {
         try {
             String str = ((TextMessage)message).getText();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedWriter.write(str);
             bufferedWriter.newLine();
             bufferedWriter.flush();
