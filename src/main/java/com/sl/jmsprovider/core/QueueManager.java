@@ -31,4 +31,8 @@ public class QueueManager {
     public BlockingQueue<String> getQueue(String queueName) {
         return queuePool.get(queueName);
     }
+
+    public boolean hasQueue(String queueName) {
+        return queuePool.containsKey(queueName);
+    }
 }

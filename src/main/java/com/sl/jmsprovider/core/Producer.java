@@ -8,15 +8,12 @@ import java.util.concurrent.BlockingQueue;
 
 public class Producer implements SessionHandler {
     BlockingQueue<String> queue;
-    String queueName;
-    QueueManager queueManager;
     Socket socket;
     BufferedReader bufferedReader;
     Session session;
 
-    public Producer(String queueName, Session session) {
-        this.queueName = queueName;
-        this.queueManager = QueueManager.instantiate();
+    public Producer(BlockingQueue queue, Session session) {
+        this.queue = queue;
         this.session = session;
         this.socket = session.getSocket();
         this.bufferedReader = session.getBufferedReader();
@@ -28,16 +25,8 @@ public class Producer implements SessionHandler {
     }
 
     @Override
-    public void checkQueue() {
-        if ((queueManager.getQueue(this.queueName)) == null) {
-            queueManager.makeQueue(queueName);
-        } queue = queueManager.getQueue(queueName);
-    }
-
-    @Override
     public void run() {
         String receivedMessage;
-        checkQueue();
 
         while (socket.isConnected()) {
             try {

@@ -188,15 +188,11 @@ public class SLQueueSession implements QueueSession {
 
     @Override
     public QueueReceiver createReceiver(Queue queue) throws JMSException {
-        return null;
-    }
-
-    @Override
-    public QueueReceiver createReceiver(Queue queue, String messageSelector) throws JMSException {
         SLQQueueReceiver queueReceiver = new SLQQueueReceiver();
 
         try {
             bufferedWriter.write("Consumer");
+            bufferedWriter.newLine();
             bufferedWriter.write(queue.getQueueName());
             bufferedWriter.newLine();
             bufferedWriter.flush();
@@ -210,11 +206,17 @@ public class SLQueueSession implements QueueSession {
     }
 
     @Override
+    public QueueReceiver createReceiver(Queue queue, String messageSelector) throws JMSException {
+        return null;
+    }
+
+    @Override
     public QueueSender createSender(Queue queue) throws JMSException {
         SLQueueSender queueSender = new SLQueueSender();
 
         try {
             bufferedWriter.write("Producer");
+            bufferedWriter.newLine();
             bufferedWriter.write(queue.getQueueName());
             bufferedWriter.newLine();
             bufferedWriter.flush();

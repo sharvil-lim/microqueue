@@ -15,7 +15,7 @@ public class ProducerTest {
             queueConnection.start();
 
             QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            Queue queue = new SLQueue();
+            Queue queue = new SLQueue("Sample");
             QueueSender queueSender = queueSession.createSender(queue);
             TextMessage textMessage = queueSession.createTextMessage();
 

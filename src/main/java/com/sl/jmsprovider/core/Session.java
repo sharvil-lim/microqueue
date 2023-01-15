@@ -3,6 +3,7 @@ package com.sl.jmsprovider.core;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 
 public class Session implements Runnable {
 
@@ -52,14 +53,20 @@ public class Session implements Runnable {
         try {
             String producerConsumerString = bufferedReader.readLine();
             String queueName = bufferedReader.readLine();
+            BlockingQueue queue;
+            if(!QueueManager.instantiate().hasQueue(queueName))
+                QueueManager.instantiate().makeQueue(queueName);
 
-            //logger.debug("Session Type : "+ producerConsumerString + " / queueName" + queueName);
+            queue = QueueManager.instantiate().getQueue(queueName);
+
+                //logger.debug("Session Type : "+ producerConsumerString + " / queueName" + queueName);
             if (producerConsumerString.equals("Consumer")) {
-                this.sessionHandler = new Consumer(queueName,this);
+               this.sessionHandler = new Consumer(queue, this);
             } else if (producerConsumerString.equals("Producer")) {
-                this.sessionHandler = new Producer(queueName, this);
+                this.sessionHandler = new Producer(queue, this);
             } else {
                 close();
+                return;
             }
 
             Thread thread = new Thread(sessionHandler);

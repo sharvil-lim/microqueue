@@ -15,7 +15,7 @@ public class ConsumerTest {
             queueConnection.start();
 
             QueueSession queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-            Queue queue = new SLQueue();
+            Queue queue = new SLQueue("Sample");
             QueueReceiver queueReceiver = queueSession.createReceiver(queue);
 
             MessageListener myListener = new SLMyListener();
