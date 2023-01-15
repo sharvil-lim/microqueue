@@ -4,15 +4,16 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 
 public class Consumer implements SessionHandler {
-    Queue<String> queue;
-    String queueName;
-    QueueManager queueManager;
-    Socket socket;
-    BufferedWriter bufferedWriter;
-    Session session;
+    private BlockingQueue<String> queue;
+    private String queueName;
+    private QueueManager queueManager;
+    private Socket socket;
+    private BufferedWriter bufferedWriter;
+    private Session session;
 
     public Consumer(String queueName, Session session) {
         this.queueName = queueName;
@@ -41,13 +42,14 @@ public class Consumer implements SessionHandler {
 
         while (socket.isConnected()) {
             try {
-                if (!queue.isEmpty()) {
-                    String message = queue.remove();
+                //if (!queue.isEmpty()) {
+                    String message = queue.take();
+                    //String message = queue.remove();
                     bufferedWriter.write(message);
                     bufferedWriter.newLine();
-                    bufferedWriter.close();
-                }
-            } catch (IOException e) {
+                    bufferedWriter.flush();
+                //}
+            } catch (IOException | InterruptedException e) {
                 close();
                 break;
             }

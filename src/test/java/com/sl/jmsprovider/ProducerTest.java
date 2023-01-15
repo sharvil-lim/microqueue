@@ -21,6 +21,12 @@ public class ProducerTest {
 
             textMessage.setText("Hello World");
             queueSender.send(textMessage);
+
+            textMessage.setText("Hello World again");
+            queueSender.send(textMessage);
+
+            textMessage.setText("ok");
+            queueSender.send(textMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,9 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 public class Producer implements SessionHandler {
-    Queue<String> queue;
+    BlockingQueue<String> queue;
     String queueName;
     QueueManager queueManager;
     Socket socket;
@@ -41,8 +42,8 @@ public class Producer implements SessionHandler {
         while (socket.isConnected()) {
             try {
                 receivedMessage = bufferedReader.readLine();
-                queue.add(receivedMessage);
-            } catch (IOException e) {
+                queue.put(receivedMessage);
+            } catch (IOException | InterruptedException e) {
                 close();
                 break;
             }

@@ -1,15 +1,17 @@
 package com.sl.jmsprovider.core;
 
+
 import java.io.*;
 import java.net.Socket;
 
 public class Session implements Runnable {
+
     private SessionHandler sessionHandler;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
 
-    Session(Socket socket) {
+    public Session(Socket socket) {
         try {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -51,10 +53,13 @@ public class Session implements Runnable {
             String producerConsumerString = bufferedReader.readLine();
             String queueName = bufferedReader.readLine();
 
+            //logger.debug("Session Type : "+ producerConsumerString + " / queueName" + queueName);
             if (producerConsumerString.equals("Consumer")) {
                 this.sessionHandler = new Consumer(queueName,this);
             } else if (producerConsumerString.equals("Producer")) {
                 this.sessionHandler = new Producer(queueName, this);
+            } else {
+                close();
             }
 
             Thread thread = new Thread(sessionHandler);
