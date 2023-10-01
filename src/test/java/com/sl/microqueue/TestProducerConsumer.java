@@ -1,10 +1,4 @@
-package com.sl.jmsprovider;
-
-import com.sl.jmsprovider.core.Producer;
-import com.sl.jmsprovider.core.Consumer;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+package com.sl.microqueue;
 
 public class TestProducerConsumer {
 

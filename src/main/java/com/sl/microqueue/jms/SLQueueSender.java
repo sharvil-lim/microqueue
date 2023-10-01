@@ -1,4 +1,4 @@
-package com.sl.jmsprovider.jms;
+package com.sl.microqueue.jms;
 
 import javax.jms.*;
 import java.io.BufferedWriter;

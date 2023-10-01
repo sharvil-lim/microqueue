@@ -1,6 +1,6 @@
-package com.sl.jmsprovider;
+package com.sl.microqueue;
 
-import com.sl.jmsprovider.core.*;
+import com.sl.microqueue.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

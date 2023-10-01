@@ -1,4 +1,4 @@
-package com.sl.jmsprovider;
+package com.sl.microqueue;
 
 import java.io.*;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package com.sl.jmsprovider.core;
+package com.sl.microqueue.core;
 
 
 import java.io.*;

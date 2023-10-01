@@ -1,6 +1,4 @@
-package com.sl.jmsprovider;
-
-import static org.junit.jupiter.api.Assertions.*;
+package com.sl.microqueue;
 
 class ConnectionFactoryTest {
 

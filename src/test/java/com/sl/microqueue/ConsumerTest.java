@@ -1,8 +1,8 @@
-package com.sl.jmsprovider;
+package com.sl.microqueue;
 
-import com.sl.jmsprovider.jms.SLMyListener;
-import com.sl.jmsprovider.jms.SLQueue;
-import com.sl.jmsprovider.jms.SLQueueConnectionFactory;
+import com.sl.microqueue.jms.SLMyListener;
+import com.sl.microqueue.jms.SLQueue;
+import com.sl.microqueue.jms.SLQueueConnectionFactory;
 
 import javax.jms.*;
 

@@ -1,9 +1,8 @@
-package com.sl.jmsprovider.core;
+package com.sl.microqueue.core;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 
