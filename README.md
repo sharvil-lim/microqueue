@@ -15,7 +15,6 @@ This project is aimed at creating a messaging queue system in C, designed to pro
 - **Custom Network Protocol**: Develop a custom network protocol for efficient data exchange.
 - **Message Queue Operations**: Support publish, subscribe, and dequeue operations.
 - **Thread Management**: Manage multiple client connections concurrently using threads.
-- **Assembly Language Optimization**: Optimize performance-critical sections using assembly language.
 
 ## Project Structure
 
