@@ -46,3 +46,14 @@ This messaging queue project can serve as a foundation for building a custom MQT
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
+
+## References
+**Git**
+* https://www.bitsnbites.eu/a-stable-mainline-branching-model-for-git/
+* https://www.youtube.com/watch?v=Uszj_k0DGsg
+* https://www.youtube.com/watch?v=ecK3EnyGD8o
+* https://www.youtube.com/watch?v=qsTthZi23VE
+**Networking**
+* https://people.cs.rutgers.edu/~sn624/352-S21/syllabus.html
+**Guides**
+* https://github.com/practical-tutorials/project-based-learning
