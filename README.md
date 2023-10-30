@@ -48,12 +48,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 ## References
-**Git**
+
+#Git
 * https://www.bitsnbites.eu/a-stable-mainline-branching-model-for-git/
 * https://www.youtube.com/watch?v=Uszj_k0DGsg
 * https://www.youtube.com/watch?v=ecK3EnyGD8o
 * https://www.youtube.com/watch?v=qsTthZi23VE
-**Networking**
+
+#Networking
 * https://people.cs.rutgers.edu/~sn624/352-S21/syllabus.html
-**Guides**
+
+#Guides
 * https://github.com/practical-tutorials/project-based-learning
