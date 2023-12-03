@@ -27,15 +27,12 @@ public class Consumer implements SessionHandler {
 
     @Override
     public void run() {
-       // if(socket == null) return;
         while (socket.isConnected()) {
             try {
-
                     String message = queue.take();
                     bufferedWriter.write(message);
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
-
             } catch (IOException | InterruptedException e) {
                 close();
                 break;

@@ -1,12 +1,10 @@
 package com.sl.microqueue.core;
 
-
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 public class Session implements Runnable {
-
     private SessionHandler sessionHandler;
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -26,9 +24,11 @@ public class Session implements Runnable {
         try {
             if (socket != null) {
                 socket.close();
-            } if (bufferedWriter != null) {
+            }
+            if (bufferedWriter != null) {
                 bufferedWriter.close();
-            } if (bufferedReader != null) {
+            }
+            if (bufferedReader != null) {
                 bufferedReader.close();
             }
         } catch (Exception e) {
@@ -54,12 +54,13 @@ public class Session implements Runnable {
             String producerConsumerString = bufferedReader.readLine();
             String queueName = bufferedReader.readLine();
             BlockingQueue queue;
-            if(!QueueManager.instantiate().hasQueue(queueName))
+
+            if(!QueueManager.instantiate().hasQueue(queueName)) {
                 QueueManager.instantiate().makeQueue(queueName);
+            }
 
             queue = QueueManager.instantiate().getQueue(queueName);
 
-                //logger.debug("Session Type : "+ producerConsumerString + " / queueName" + queueName);
             if (producerConsumerString.equals("Consumer")) {
                this.sessionHandler = new Consumer(queue, this);
             } else if (producerConsumerString.equals("Producer")) {

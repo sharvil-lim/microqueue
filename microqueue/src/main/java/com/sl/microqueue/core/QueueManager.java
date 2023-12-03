@@ -13,12 +13,9 @@ public class QueueManager {
     }
 
     public static QueueManager instantiate() {
-        if (instance == null) {
-            instance = new QueueManager();
-        } else if (queuePool == null) {
+        if (instance == null || queuePool == null) {
             instance = new QueueManager();
         }
-
         return instance;
     }
 

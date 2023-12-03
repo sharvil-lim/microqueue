@@ -51,11 +51,9 @@ public class Client {
             if (bufferedReader != null) {
                 bufferedReader.close();
             }
-
             if (bufferedWriter != null) {
                 bufferedWriter.close();
             }
-
             if (socket != null) {
                 socket.close();
             }
@@ -65,6 +63,8 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
+        System.out.println("(1) Enter whether the client is a producer or consumer: ");
+        System.out.println("(2) Enter the name of the queue: ");
         Client client = new Client(new Socket("localhost", 1234));
         client.listenForMessage();
         client.sendMessage();
