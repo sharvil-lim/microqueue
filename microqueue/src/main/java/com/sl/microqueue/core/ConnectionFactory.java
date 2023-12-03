@@ -36,7 +36,8 @@ public class ConnectionFactory {
         try {
             if (serverSocket != null) {
                 serverSocket.close();
-            } if (serverHandlers != null) {
+            } 
+            if (serverHandlers != null) {
                 for (ServerHandler serverHandler : serverHandlers) {
                     serverHandler.close();
                 }
